@@ -7,39 +7,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import check_password_hash, Bcrypt, generate_password_hash
 import requests
 import json
+from models import db, User, Question, Options, Quiz
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://quizify:quizify_pwd@localhost/quiz_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # To suppress a warning
 
-db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 bcrypt = Bcrypt()
+db.init_app(app)
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-
-class Quiz(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    questions = db.relationship('Question', backref='quiz', lazy=True)
-
-class Question(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(255), nullable=False)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False)
-    options = db.relationship('Options', backref='question', lazy=True)
-
-class Options(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(100), nullable=False)
-    is_correct = db.Column(db.Boolean, default=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -172,7 +152,6 @@ def create_quiz_from_api():
         flash('Failed to fetch quiz data from API.', 'danger')
 
     return redirect(url_for('dashboard'))
-
 
 if __name__ == "__main__":
     with app.app_context():
