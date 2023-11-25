@@ -4,28 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ quiz.title }} Quiz</title>
-    <!-- Add any additional styles or scripts here -->
+    <!-- Add links for styles or scripts here -->
 </head>
 <body>
     <h1>{{ quiz.title }} Quiz</h1>
 
-    <form method="POST" action="{{ url_for('quiz', quiz_id=quiz.id) }}">
-        {% for question in quiz.questions %}
-            <div class="question">
-                <p>{{ question.text }}</p>
-                
-                {% for option in question.options %}
-                    <label>
-                        <input type="radio" name="question_{{ question.id }}" value="{{ option.id }}" required>
-                        {{ option.text }}
-                    </label><br>
-                {% endfor %}
-            </div>
-        {% endfor %}
+    {% if not quiz.submitted %}
+        <form method="POST" action="{{ url_for('quiz', quiz_id=quiz.id) }}">
+            {% for question in quiz.questions %}
+                <div class="question">
+                    <p>{{ question.text }}</p>
+                    
+                    {% for option in question.options %}
+                        <label>
+                            <input type="radio" name="question_{{ question.id }}" value="{{ option.id }}" required>
+                            {{ option.text }}
+                        </label><br>
+                    {% endfor %}
+                </div>
+            {% endfor %}
 
-        <button type="submit">Submit Quiz</button>
-    </form>
+            <button type="submit">Submit Quiz</button>
+        </form>
+    {% else %}
+        <p>Your score: {{ quiz.score }}/{{ len(quiz.questions) }}</p>
+    {% endif %}
 
-    <!-- Add any additional content or scripts here -->
+    <!-- Add additional contents or scripts here -->
 </body>
 </html>

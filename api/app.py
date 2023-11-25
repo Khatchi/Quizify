@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -20,6 +20,9 @@ login_manager.login_view = 'login'
 bcrypt = Bcrypt()
 db.init_app(app)
 
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,7 +30,7 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Check if the username is already taken
+        # Checks if the username is already taken
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash('Username already taken. Please choose another.', 'danger')
@@ -52,10 +55,6 @@ def register():
 def load_user(user_id):
     return db.session.query(User).get(int(user_id))
 
-# Rest of your routes and logic...
-@app.route('/')
-def home():
-    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -104,6 +103,11 @@ def quiz(quiz_id):
 
             if user_answer and user_answer == str(correct_option.id):
                 score += 1
+            
+        # Update the quiz object in the database
+        quiz.score = score
+        quiz.submitted = True
+        db.session.commit()    
 
         flash(f'Quiz completed! Your score: {score}/{len(quiz.questions)}', 'success')
         return redirect(url_for('dashboard'))
