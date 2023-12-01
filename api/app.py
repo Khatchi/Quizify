@@ -7,12 +7,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import check_password_hash, Bcrypt, generate_password_hash
 import requests
 import json
+import os
+from dotenv import load_dotenv
 from models import db, User, Question, Options, Quiz
 
+load_dotenv()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://quizify:quizify_pwd@localhost/quiz_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # To suppress a warning
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
