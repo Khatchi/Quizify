@@ -23,7 +23,7 @@ login_manager.login_view = 'login'
 bcrypt = Bcrypt()
 db.init_app(app)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
