@@ -15,12 +15,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <style>
-    #hero_image{
-      background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sty1e.css') }}">
+    <style>
+      #hero_image{
+        background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
     }
-  </style>
+    </style>
+  </head>
   <body>
   <div class="site-wrap">
     <header class="site-navbar bg-white" role="banner">
@@ -28,78 +29,84 @@
         <div class="row align-items-center">
           <div class="col-11 col-xl-2">
             <div class="mb-0 site-logo">
-              <a href="{{ url_for('home') }}" class="text-black h2 mb-0">
-                <img src="{{ url_for('static', filename='images/quizify.svg') }}" style="max-height: 150px; max-width: 150px;" alt="Quizify Logo">
-              </a>
+              <img href="../index.html" class="text-black h2 mb-0" src="{{ url_for('static', filename='images/quizify.svg') }}"  style="max-height: 150px; max-width: 150px;">
             </div>
           </div>
-          <div class="col-12 col-md-10 d-none d-xl-block">
-            <nav class="site-navigation position-relative text-right" role="navigation">
-              <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="quiz.html" class="btn btn-primary btn-md" style="color: aliceblue;">Create Quiz</a></li>
-                <li><a href="{{ url_for('login') }}" class="btn btn-primary btn-md" style="color: aliceblue;">login</a></li>
-                <li><a href="{{ url_for('register') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Register</a></li>
-              </ul>
-            </nav>
           </div>
-          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;">
-            <a href="#" class="site-menu-toggle js-menu-toggle text-black">
-              <span class="icon-menu h3"></span>
-            </a>
-          </div>
-
-          </div>
-
         </div>
       </div>
     </header>
-    <div class="site-blocks-cover overlay" id="hero_image"
-   
-    data-aos="fade" data-stellar-background-ratio="0.5">
-      <div class="container">
-        <div class="row align-items-center justify-content-center text-center">
-          <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
-            <div class="row justify-content-center mb-4">
-              <div class="col-md-8 text-center">
-                <h1><span class="typed-words"></span></h1>
-                <p class="lead mb-5">Empowering Interactive Learning and Engagement</p>
-                <div><a href="#" class="btn btn-primary btn-md">Create Quiz</a></div>
-              </div>
-            </div>
+    <div class="site-blocks-cover overlay" id="heros_image"
+    style="background-image: url(../images/hero_1.jpg); z-index: 10;;" 
+    data-aos="" data-stellar-background-ratio="0.5">
+      <div class="grid">
+        <main class="signup__page" style="z-index: 20;">
+          <!-- The greetings -->
 
+          <section class="greetings">
+            <p>Create Account</p>
+            <p>to get started now!</p>
+          </section>
+
+          <!-- The input region  -->
+          <section class="input signup">
+            <form method="post" action="{{ url_for('register') }}" class="form">
+                <section class="inputField">
+                    <input
+                        type="email"
+                        class="inputField__one"
+                        name="email"
+                        id="email"
+                        placeholder="Email Address"
+                        autocomplete="on"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        class="inputField__two"
+                        placeholder="Password"
+                        autocomplete="off"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                        class="inputField__two"
+                        placeholder="Confirm Password"
+                        autocomplete="off"
+                        required
+                    />
+                </section>
+                <!-- The register button -->
+                <div class="button">
+                    <button type="submit" class="signup__btn" style="background-color: #1377ff;">
+                        <p>Signup</p>
+                    </button>
+                </div>
+            </form>
+        </section>
+        
+          <!-- The input region  -->
+          <div class="orsignin">
+            <span class="signup__line"></span>
+            <p class="signIn">or sign in with</p>
+            <span class="signup__line"></span>
           </div>
-        </div>
+
+          <div class="socials">
+            <button class="google" style="background-color: red;"><a href="#">Google</a></button>
+            <button class="facebook" style="background-color: #0f0ce0;"><a href="#">Facebook</a></button>
+          </div>
+          <div class="existingAcct">
+            <small>Already have an exisiting account?</small>
+            <a href="{{ url_for('login') }}"><button class="signup__btn" style="background-color: #1377ff;">Sign in</button></a>
+          </div>
+        </main>
       </div>
     </div> 
-    <section class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <div class="p-3 box-with-humber">
-              <div class="number-behind">01.</div>
-              <h2>Our Values</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-4">
-            <div class="p-3 box-with-humber">
-              <div class="number-behind">02.</div>
-              <h2>Our Mission</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-4">
-            <div class="p-3 box-with-humber">
-              <div class="number-behind">03.</div>
-              <h2>Our Philosophy</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
     <footer class="site-footer">
       <div class="container">
         <div class="row">
@@ -150,21 +157,6 @@
   <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
-
-  <script src="{{ url_for('static', filename='js/typed.js') }}"></script>
-            <script>
-            var typed = new Typed('.typed-words', {
-            strings: ["Unlock the Power of Interactive Learning","Elevate Your Educational Experience"," Discover Seamless Integration"],
-            typeSpeed: 80,
-            backSpeed: 80,
-            backDelay: 4000,
-            startDelay: 1000,
-            loop: true,
-            showCursor: true
-            });
-            </script>
-  
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    
   </body>
 </html>
