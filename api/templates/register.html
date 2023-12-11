@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sty1e.css') }}">
     <style>
-      #heros_image{
+      #hero_image{
         background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
-      }
+    }
     </style>
   </head>
   <body>
@@ -50,46 +50,46 @@
 
           <!-- The input region  -->
           <section class="input signup">
-            <form action="" class="form">
-              <section class="inputField">
-                <input
-                  type="email"
-                  class="inputField__one"
-                  name="email"
-                  id="email"
-                  placeholder="Email Address"
-                  autocomplete="on"
-                  required
-                />
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="inputField__two"
-                  placeholder="Password"
-                  autocomplete="off"
-                  required
-                />
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="inputField__two"
-                  placeholder="Confirm Password"
-                  autocomplete="off"
-                  required
-                />
-              </section>
-
-              <!-- The login button -->
-
-              <div class="button">
-                <button type="submit" class="signup__btn"style="background-color: #1377ff;">
-                  <p >Signup</p>
-                </button>
-              </div>
+            <form method="post" action="{{ url_for('register') }}" class="form">
+                <section class="inputField">
+                    <input
+                        type="email"
+                        class="inputField__one"
+                        name="email"
+                        id="email"
+                        placeholder="Email Address"
+                        autocomplete="on"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        class="inputField__two"
+                        placeholder="Password"
+                        autocomplete="off"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                        class="inputField__two"
+                        placeholder="Confirm Password"
+                        autocomplete="off"
+                        required
+                    />
+                </section>
+                <!-- The register button -->
+                <div class="button">
+                    <button type="submit" class="signup__btn" style="background-color: #1377ff;">
+                        <p>Signup</p>
+                    </button>
+                </div>
             </form>
-          </section><!-- The input region  -->
+        </section>
+        
+          <!-- The input region  -->
           <div class="orsignin">
             <span class="signup__line"></span>
             <p class="signIn">or sign in with</p>
@@ -102,7 +102,7 @@
           </div>
           <div class="existingAcct">
             <small>Already have an exisiting account?</small>
-            <a href="./sign-in.html"><button class="signup__btn" style="background-color: #1377ff;">Sign in</button></a>
+            <a href="{{ url_for('login') }}"><button class="signup__btn" style="background-color: #1377ff;">Sign in</button></a>
           </div>
         </main>
       </div>

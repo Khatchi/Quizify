@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
@@ -51,7 +51,7 @@
           <!-- The input region  -->
         
           <section class="input">
-            <form action="" class="form">
+            <form method="post" action="{{ url_for('login') }}" class="form">
               <section class="inputField">
                 <input
                   type="email"
@@ -80,6 +80,15 @@
                 <button type="submit" style="background-color: #1377ff;">
                   <p>Login</p>
                 </button>
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class="messages">
+                      {% for message in messages %}
+                        <li class="{{ message.category }}">{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
               </div>
             </form>
           </section>
@@ -95,7 +104,7 @@
           </div>
           <div class="existingAcct">
             <small>Don't have existing account?</small>
-            <a href="./sign-up.html"><button style="background-color: #1377ff;">Sign Up</button></a>
+            <a href="{{ url_for('register') }}"><button style="background-color: #1377ff;">Sign Up</button></a>
           </div>
         </main>
       </div>

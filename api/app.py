@@ -30,20 +30,20 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
 
         # Checks if the username is already taken
-        existing_user = User.query.filter_by(username=username).first()
+        existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            flash('Username already taken. Please choose another.', 'danger')
+            flash('Email already taken. Please choose another.', 'danger')
             return redirect(url_for('register'))
 
         # Hash the password before storing it in the database
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         # Create a new user instance
-        new_user = User(username=username, password=hashed_password)
+        new_user = User(email=email, password=hashed_password)
 
         # Add the user to the database
         db.session.add(new_user)
@@ -62,14 +62,14 @@ def load_user(user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=email).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('home'))
         else:
             flash('Login failed. Check your username and password.', 'danger')
 
