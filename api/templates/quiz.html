@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Quizify</title>
+        <link href='' rel='stylesheet'>
+        <link href='' rel='stylesheet'>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
+        <link rel="stylesheet" href="../static/fonts/icomoon/style.css">
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/magnific-popup.css">
+        <link rel="stylesheet" href='../static/css/jquery-ui.css'>
+        <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
+        <link rel="stylesheet" href='../static/css/owl.theme.default.min.css'>
+        <link rel="stylesheet" href="../static/css/bootstrap-datepicker.css">
+        <link rel="stylesheet" href="../static/fonts/flaticon/font/flaticon.css">
+        <link rel="stylesheet" href="../static/css/aos.css">
+        <link rel="stylesheet" href="../static/css/style.css">
+        <style>
+            #hero_image{
+            background-image: "../static/images/hero_1.jpg";
+            }
+            #quizWrap {
+            max-width: 600px;
+            margin: 0 auto;
+            }
+
+            #quizQn {
+            padding: 20px;
+            background: #4c93ba;
+            color: #fff;
+            font-size: 24px;
+            border-radius: 10px;
+            }
+
+            #quizAns {
+            margin: 10px 0;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-gap: 10px;
+            }
+
+            #quizAns input[type=radio] {
+            display: none;
+            }
+
+            #quizAns label {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            }
+
+            #quizAns label.correct {
+            background: #d8ffc4;
+            border: 1px solid #60a03f;
+            }
+
+            #quizAns label.wrong {
+            background: #ffe8e8;
+            border: 1px solid #c78181;
+            }
+
+            * {
+            font-family: arial, sans-serif;
+            box-sizing: border-box;
+            }
+
+            body {
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            background: rgb(197, 58, 142);
+            background: radial-gradient(circle, rgba(59, 114, 185, 1) 0%, rgb(197, 58, 155) 100%);
+            }
+
+            .widget-wrap {
+            width: 600px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            }
+        </style>
+    </head>
+    <body oncontextmenu='return false'>
+      <div class="site-wrap">
+        <header class="site-navbar bg-white" role="banner">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-11 col-xl-2">
+                  <div class="mb-0 site-logo">
+                    <a href="{{ url_for('home') }}" class="text-black h2 mb-0">
+                      <img src=../static/images/quizify.svg style="max-height: 150px; max-width: 150px;" 
+                      alt="Quizify Logo">
+                    </a>
+                  </div>
+                </div>
+      
+                </div>
+      
+              </div>
+            </div>
+        </header>
+        <div class="site-blocks-cover overlay" id="hero_image"
+        data-aos="fade" data-stellar-background-ratio="0.5">
+      <div class="container" style="z-index: 500 !important;">
+        <div class="row align-items-center justify-content-center text-center">
+          <div class="widget-wrap">
+            <h1>QUIZ</h1>
+            <div id="quizWrap"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+        <script type='text/javascript'>
+        var quiz = {data: [
+        {
+        q: "What is the standard distance between the target and archer in Olympics?",
+        o: [
+        "50 meters",
+        "70 meters",
+        "100 meters",
+        "120 meters"],
+
+        a: 1
+        },
+        {
+        q: "Which is the highest number on a standard roulette wheel?",
+        o: [
+        "22",
+        "24",
+        "32",
+        "36"],
+
+        a: 3 },
+
+        {
+        q: "How much wood could a woodchuck chuck if a woodchuck would chuck wood?",
+        o: [
+        "400 pounds",
+        "550 pounds",
+        "700 pounds",
+        "750 pounds"],
+
+        a: 2 },
+
+        {
+        q: "Which is the seventh planet from the sun?",
+        o: [
+        "Uranus",
+        "Earth",
+        "Pluto",
+        "Mars"],
+
+        a: 0 },
+
+        {
+        q: "Which is the largest ocean on Earth?",
+        o: [
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Pacific Ocean"],
+
+        a: 3 }],
+
+        hWrap: null, // HTML quiz container
+        hQn: null, // HTML question wrapper
+        hAns: null, // HTML answers wrapper
+
+        now: 0, // current question
+        score: 0, // current score
+
+        init: () => {
+        quiz.hWrap = document.getElementById("quizWrap");
+
+        quiz.hQn = document.createElement("div");
+        quiz.hQn.id = "quizQn";
+        quiz.hWrap.appendChild(quiz.hQn);
+
+        quiz.hAns = document.createElement("div");
+        quiz.hAns.id = "quizAns";
+        quiz.hWrap.appendChild(quiz.hAns);
+
+        quiz.draw();
+        },
+
+        draw: () => {
+        quiz.hQn.innerHTML = quiz.data[quiz.now].q;
+
+        quiz.hAns.innerHTML = "";
+        for (let i in quiz.data[quiz.now].o) {
+        let radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "quiz";
+        radio.id = "quizo" + i;
+        quiz.hAns.appendChild(radio);
+        let label = document.createElement("label");
+        label.innerHTML = quiz.data[quiz.now].o[i];
+        label.setAttribute("for", "quizo" + i);
+        label.dataset.idx = i;
+        label.addEventListener("click", () => {quiz.select(label);});
+        quiz.hAns.appendChild(label);
+        }
+        },
+
+        select: option => {
+        let all = quiz.hAns.getElementsByTagName("label");
+        for (let label of all) {
+        label.removeEventListener("click", quiz.select);
+        }
+
+        let correct = option.dataset.idx == quiz.data[quiz.now].a;
+        if (correct) {
+        quiz.score++;
+        option.classList.add("correct");
+        } else {
+        option.classList.add("wrong");
+        }
+
+        quiz.now++;
+        setTimeout(() => {
+        if (quiz.now < quiz.data.length) {quiz.draw();} else { quiz.hQn.innerHTML=`You have answered ${quiz.score} of ${quiz.data.length} correctly.`; quiz.hAns.innerHTML="" ; } }, 1000); }, reset: ()=> {
+            quiz.now = 0;
+           quiz.score = 0;
+            quiz.draw();
+           } };
+
+       window.addEventListener("load", quiz.init);
+        </script>
+        <script src='../static/js/jquery-3.3.1.min.js'></script>
+        <script src='../static/js/jquery-migrate-3.0.1.min.js'></script>
+        <script src='../static/js/jquery-ui.js'></script>
+        <script src='../static/js/popper.min.js'></script>
+        <script src='../static/js/bootstrap.min.js'></script>
+        <script src='../static/js/owl.carousel.min.js'></script>
+        <script src='../static/js/jquery.stellar.min.js'></script>
+        <script src='../static/js/jquery.countdown.min.js'></script>
+        <script src='../static/js/jquery.magnific-popup.min.js'></script>
+        <script src='../static/js/bootstrap-datepicker.min.js'></script>
+        <script src='../static/js/aos.js'></script>
+        <script src='../static/js/main.js'></script>
+    </body>
+</html>
