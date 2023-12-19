@@ -23,7 +23,7 @@ login_manager.login_view = 'login'
 bcrypt = Bcrypt()
 db.init_app(app)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
@@ -69,7 +69,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard'))
         else:
             flash('Login failed. Check your username and password.', 'danger')
 
@@ -115,7 +115,7 @@ def quiz(quiz_id):
         flash(f'Quiz completed! Your score: {score}/{len(quiz.questions)}', 'success')
         return redirect(url_for('dashboard'))
 
-    return render_template('quiz.html', quiz=quiz)
+    return render_template('quiz.html', quiz=quiz, quiz_id=quiz_id)
 
 
 @app.route('/create_quiz_from_api')

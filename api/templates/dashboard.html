@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{{ quiz.title }}</title>
+    <title>Dashboard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
@@ -16,25 +16,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
-    <style>
-      #hero_image{
-        background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
-      }
-      .question {
-          counter-increment: questionCounter; /* Increment the counter for each question */
-          margin-bottom: 20px
-          color: white;
-      }
-      .question p::before {
-          content: counter(questionCounter) ". "; /* Display the question number */
-          font-weight: bold;
-          margin-right: 10px
-          color: white;
-      }
-      label {
-          color: white;
-      }
-    </style>
+  <style>
+    #hero_image{
+      background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
+    }
+  </style>
   <body>
   <div class="site-wrap">
     <header class="site-navbar bg-white" role="banner">
@@ -42,7 +28,7 @@
         <div class="row align-items-center">
           <div class="col-11 col-xl-2">
             <div class="mb-0 site-logo">
-              <a href="{{ url_for('quiz', quiz_id=quiz_id) }}" class="text-black h2 mb-0">
+              <a href="{{ url_for('dashboard') }}" class="text-black h2 mb-0">
                 <img src="{{ url_for('static', filename='images/quizify.svg') }}" style="max-height: 150px; max-width: 150px;" alt="Quizify Logo">
               </a>
             </div>
@@ -50,7 +36,8 @@
           <div class="col-12 col-md-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
-        
+                <li><a href="{{ url_for('create_quiz_from_api') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Create</a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Logout</a></li>
               </ul>
             </nav>
           </div>
@@ -74,39 +61,22 @@
             <div class="row justify-content-center mb-4">
               <div class="col-md-8 text-center">
                 <h1><span class="typed-words"></span></h1>
+                <h1><span class="typed-words">Welcome to your Dashboard!</span></h1>
                 <p class="lead mb-5">Empowering Interactive Learning and Engagement</p>
+                
+                <h1><span class="typed-words">Available Quizzes:</span></h1>
                 <div>
-                  <h1>{{ quiz.title }} </h1>
-
-                  {% if not quiz.submitted %}
-                    <form method="POST" action="{{ url_for('quiz', quiz_id=quiz.id) }}">
-                      {% for question in quiz.questions %}
-                        <div class="question">
-                          <p>{{ question.text }}</p>
-
-                          {% for option in question.options %}
-                            <label>
-                              <input type="radio" name="question_{{ question.id }}" value="{{ option.id }}" required>
-                              {{ option.text }}
-                            </label><br>
-                          {% endfor %}
-                        </div>
-                      {% endfor %}
-                      
-                      <button type="button" class="btn btn-primary btn-md" id="nextButton">Next</button>
-                      <button type="submit" class="btn btn-primary btn-md">Submit Quiz</button>
-                    </form>
-                  {% else %}
-                    <p>Your score: {{ quiz.score }}/{{ len(quiz.questions) }}</p>
-                  {% endif %}
+                    {% for quiz in quizzes %}
+                        <li><a href="{{ url_for('quiz', quiz_id=quiz.id) }}" class="btn btn-primary btn-md">Quiz {{ quiz.id }}: {{ quiz.title }}</a></li>
+                    {% endfor %}
                 </div>
+              </div>
             </div>
 
           </div>
         </div>
       </div>
-    </div>
-    
+    </div> 
     <section class="site-section">
       <div class="container">
         <div class="row">
@@ -201,43 +171,6 @@
             </script>
   
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Initialize the current question index
-      let currentQuestionIndex = 0;
-
-      // Get all questions and hide them except the first one
-      const questions = document.querySelectorAll(".question");
-      questions.forEach((question, index) => {
-        if (index !== currentQuestionIndex) {
-          question.style.display = "none";
-        }
-      });
-
-      // Get the "Next" button
-      const nextButton = document.getElementById("nextButton");
-
-      // Add a click event listener to the "Next" button
-      nextButton.addEventListener("click", function () {
-        // Hide the current question
-        questions[currentQuestionIndex].style.display = "none";
-
-        // Increment the current question index
-        currentQuestionIndex++;
-
-        // Check if there is another question
-        if (currentQuestionIndex < questions.length) {
-          // Display the next question
-          questions[currentQuestionIndex].style.display = "block";
-        } else {
-          // If no more questions, submit the form or perform any other action
-          document.querySelector("form").submit();
-        }
-      });
-    });
-  </script>
-
     
   </body>
 </html>
